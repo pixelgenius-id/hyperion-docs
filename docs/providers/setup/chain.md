@@ -21,6 +21,8 @@ with its default value and an example of real usage.
   - `"get_links": 1000`
   - `"get_deltas": 1000`
 - `"access_log": false` ⇒ Enable log API access.
+- `"hot_first_actions": false` ⇒ When enabled, an unbounded newest-first `get_actions` account poll (e.g. `?account=eosio.token&sort=desc`, no `before`/`after`, no pagination) searches only the most recent action partition(s) first, widening to the full index set **only** if that window returns fewer than `limit` hits. Keeps high-frequency polling for the latest actions off the older/warm shards. Default off; safe to enable without reindexing. *(Note: while a poll is served from the hot window, the response `total` reflects that window only.)*
+- `"hot_first_window": 2` ⇒ Number of newest action partitions searched in the hot window when `hot_first_actions` is enabled. Default `2` (covers the live partition plus the previous one across a rollover).
 - `"explorer"` ⇒ Explorer configuration (see [Explorer Setup](../explorer.md))
     - `"upstream": "http://127.0.0.1:4777"` ⇒ URL of the Explorer SSR server
     - `"theme": "default"` ⇒ Theme name (matches `<name>.theme.mjs` in explorer/themes/)
@@ -159,6 +161,8 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
       "get_deltas": 1000
     },
     "access_log": false,
+    "hot_first_actions": false,
+    "hot_first_window": 2,
     "explorer": {
       "upstream": "http://127.0.0.1:4777",
       "theme": "default",
