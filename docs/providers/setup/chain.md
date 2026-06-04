@@ -22,7 +22,8 @@ with its default value and an example of real usage.
   - `"get_deltas": 1000`
 - `"access_log": false` ⇒ Enable log API access.
 - `"hot_first_actions": false` ⇒ When enabled, an unbounded newest-first `get_actions` account poll (e.g. `?account=eosio.token&sort=desc`, no `before`/`after`, no pagination) searches only the most recent action partition(s) first, widening to the full index set **only** if that window returns fewer than `limit` hits. Keeps high-frequency polling for the latest actions off the older/warm shards. Default off; safe to enable without reindexing. *(Note: while a poll is served from the hot window, the response `total` reflects that window only.)*
-- `"hot_first_window": 2` ⇒ Number of newest action partitions searched in the hot window when `hot_first_actions` is enabled. Default `2` (covers the live partition plus the previous one across a rollover).
+- `"hot_first_window": 2` ⇒ Number of newest action partitions searched in the hot window when `hot_first_actions` **or** `hot_first_transaction` is enabled. Default `2` (covers the live partition plus the previous one across a rollover).
+- `"hot_first_transaction": false` ⇒ When enabled, a `get_transaction` lookup **without** a `block_hint` searches the most recent action partition(s) first and widens to the full index set **only** on a miss. Without it, a `trx_id` lookup has no block range to prune on and fans out across every action partition — including cold/old shards. Because all of a transaction's documents share one block (one partition), a hot-window hit is always complete, so the common case (recent transactions) never touches the older tiers. Reuses `hot_first_window`. Default off; safe to enable without reindexing. Tip: clients that already know the block can pass `?block_hint=<block_num>` to target the single partition directly.
 - `"explorer"` ⇒ Explorer configuration (see [Explorer Setup](../explorer.md))
     - `"upstream": "http://127.0.0.1:4777"` ⇒ URL of the Explorer SSR server
     - `"theme": "default"` ⇒ Theme name (matches `<name>.theme.mjs` in explorer/themes/)
@@ -163,6 +164,7 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
     "access_log": false,
     "hot_first_actions": false,
     "hot_first_window": 2,
+    "hot_first_transaction": false,
     "explorer": {
       "upstream": "http://127.0.0.1:4777",
       "theme": "default",
