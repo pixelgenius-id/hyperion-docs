@@ -21,7 +21,13 @@ with its default value and an example of real usage.
   - `"get_links": 1000`
   - `"get_deltas": 1000`
 - `"access_log": false` ⇒ Enable log API access.
-- `"enable_explorer": false`
+- `"hot_first_actions": false` ⇒ When enabled, an unbounded newest-first `get_actions` account poll (e.g. `?account=eosio.token&sort=desc`, no `before`/`after`, no pagination) searches only the most recent action partition(s) first, widening to the full index set **only** if that window returns fewer than `limit` hits. Keeps high-frequency polling for the latest actions off the older/warm shards. Default off; safe to enable without reindexing. *(Note: while a poll is served from the hot window, the response `total` reflects that window only.)*
+- `"hot_first_window": 2` ⇒ Number of newest action partitions searched in the hot window when `hot_first_actions` **or** `hot_first_transaction` is enabled. Default `2` (covers the live partition plus the previous one across a rollover).
+- `"hot_first_transaction": false` ⇒ When enabled, a `get_transaction` lookup **without** a `block_hint` searches the most recent action partition(s) first and widens to the full index set **only** on a miss. Without it, a `trx_id` lookup has no block range to prune on and fans out across every action partition — including cold/old shards. Because all of a transaction's documents share one block (one partition), a hot-window hit is always complete, so the common case (recent transactions) never touches the older tiers. Reuses `hot_first_window`. Default off; safe to enable without reindexing. *(Tip: clients that already know the block can pass `?block_hint=<block_num>` to target the single partition directly.)*
+- `"explorer"` ⇒ Explorer configuration (see [Explorer Setup](../explorer.md))
+    - `"upstream": "http://127.0.0.1:4777"` ⇒ URL of the Explorer SSR server
+    - `"theme": "default"` ⇒ Theme name (matches `<name>.theme.mjs` in explorer/themes/)
+    - `"home_redirect": true` ⇒ Redirect API root to `/explorer/`
 
 ### 2. Settings
 
@@ -39,6 +45,11 @@ with its default value and an example of real usage.
   the logging
 - `"allow_custom_abi": false` ⇒ allow using custom ABIs from the custom-abi/<CHAIN_NAME> folder, they must match the
   pattern <contract>-<start_block>-<end_block>.json. Those ABIs will overwrite on-chain data for the given range.
+- `"auto_mode_switch": false` ⇒ Automatically restart the indexer in data mode after ABI scan completes. **Set to `true` for first-time indexing** — see [Indexer Troubleshooting](../help/indexer.md#indexer-stuck-after-abi-scan) if the indexer appears stuck after ABI scan.
+- `"index_partition_size": 10000000` ⇒ Number of blocks per Elasticsearch index partition. **Do not change after indexing has started.** See [Index Lifecycle Management](../operations/index_management.md)
+- `"max_retained_blocks": 0` ⇒ Maximum blocks to retain on Elasticsearch. Older data is automatically pruned. Set to `0` to disable. See [Index Lifecycle Management](../operations/index_management.md)
+- `"es_replicas": 0` ⇒ Number of Elasticsearch index replicas
+- `"tiered_index_allocation"` ⇒ Tiered storage allocation rules for Elasticsearch indices. See [Index Lifecycle Management](../operations/index_management.md)
 
 ### 3. Blacklists
 
@@ -151,7 +162,14 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
       "get_deltas": 1000
     },
     "access_log": false,
-    "enable_explorer": false
+    "hot_first_actions": false,
+    "hot_first_window": 2,
+    "hot_first_transaction": false,
+    "explorer": {
+      "upstream": "http://127.0.0.1:4777",
+      "theme": "default",
+      "home_redirect": true
+    }
   },
   "settings": {
     "preview": false,
@@ -165,7 +183,10 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
     "bp_logs": false,
     "bp_monitoring": false,
     "ipc_debug_rate": 60000,
-    "allow_custom_abi": false
+    "allow_custom_abi": false,
+    "index_partition_size": 10000000,
+    "max_retained_blocks": 0,
+    "es_replicas": 0
   },
   "blacklists": {
     "actions": [],
@@ -228,3 +249,125 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
 ````
 
 [:fontawesome-solid-arrow-left-long: Hyperion Configuration](hyperion_configuration.md#add-new-chain){ .md-button }
+
+---
+
+## Vexanium Example
+
+The following is a working configuration for the **Vexanium** mainnet (`vex`).
+
+Key differences from a standard EOSIO chain:
+
+- `eosio_alias` and `system_contract` are `"vexcore"` (not `"eosio"`)
+- `parser` is `"3.2"` (Antelope Spring)
+- `custom_core_token` is `"VEX"`
+- `"vexcore::onblock"` is blacklisted to reduce index noise
+- `live_only_mode: true` — indexing starts from a snapshot, not from block 1
+
+```json
+{
+  "api": {
+    "chain_name": "Vexanium",
+    "server_addr": "0.0.0.0",
+    "server_port": 7000,
+    "server_name": "vexascan.com",
+    "provider_name": "Your Provider Name",
+    "provider_url": "https://yoursite.com",
+    "chain_logo_url": "https://vexascan.com/assets/vex-logo.png",
+    "enable_caching": false,
+    "custom_core_token": "VEX",
+    "chain_api": "http://127.0.0.1:8888",
+    "push_api": "http://127.0.0.1:8888",
+    "limits": {
+      "get_actions": 1000,
+      "get_voters": 100,
+      "get_links": 1000,
+      "get_blocks": 500,
+      "get_trx_actions": 200
+    },
+    "disable_tx_cache": true,
+    "disable_rate_limit": true
+  },
+  "settings": {
+    "chain": "vex",
+    "system_contract": "vexcore",
+    "eosio_alias": "vexcore",
+    "parser": "3.2",
+    "preview": false,
+    "auto_mode_switch": false,
+    "index_version": "v1",
+    "auto_stop": 0,
+    "index_partition_size": 10000000,
+    "es_replicas": 0
+  },
+  "indexer": {
+    "start_on": 409543200,
+    "stop_on": 0,
+    "live_reader": true,
+    "live_only_mode": true,
+    "abi_scan_mode": false,
+    "fetch_block": true,
+    "fetch_traces": true,
+    "fetch_deltas": true,
+    "process_deltas": true
+  },
+  "scaling": {
+    "batch_size": 2000,
+    "readers": 1,
+    "ds_queues": 1,
+    "ds_threads": 1,
+    "ds_pool_size": 1,
+    "indexing_queues": 1,
+    "max_autoscale": 4
+  },
+  "blacklists": {
+    "actions": ["vexcore::onblock"],
+    "deltas": []
+  },
+  "features": {
+    "streaming": {
+      "enable": true,
+      "traces": true,
+      "deltas": true
+    },
+    "tables": {
+      "proposals": true,
+      "accounts": true,
+      "voters": true,
+      "permissions": true,
+      "user_resources": true
+    },
+    "index_deltas": true,
+    "index_transfer_memo": true,
+    "index_all_deltas": true
+  }
+}
+```
+
+**Connections** (`config/connections.json`):
+
+```json
+"chains": {
+  "vex": {
+    "name": "Vexanium",
+    "chain_id": "f9f432b1851b5c179d2091a96f593aaed50ec7466b74f89301f957a83e56ce1f",
+    "http": "http://127.0.0.1:8888",
+    "ship": [{"label": "primary", "url": "ws://127.0.0.1:8080"}]
+  }
+}
+```
+
+**Ecosystem config** (`ecosystem.config.js`):
+
+```js
+{
+  name: 'vex-indexer',
+  script: './hyp-control',
+  args: 'start indexer vex'
+},
+{
+  name: 'vex-api',
+  script: './hyp-control',
+  args: 'start api vex'
+}
+```

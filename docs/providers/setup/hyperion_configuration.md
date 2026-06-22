@@ -24,8 +24,8 @@ First, let's initialize our configuration. Just run:
 ```
 
 !!! note
-    This command will also check the connection to Elasticsearch, Rabbitmq and Redis. Make sure everything is up and
-    running.
+    This command will check the connection to Elasticsearch, RabbitMQ, Redis and MongoDB. Make sure everything is up and
+    running. The wizard will prompt you for each service's host, credentials, and connection details.
 
 You can use `./hyp-config connections test` to test connectivity at any point and `./hyp-config connections reset` to back up and remove the current configuration.
 
@@ -55,22 +55,22 @@ You should see an output similar to:
 
 ## Running Hyperion
 
-We provide scripts to simplify the process of starting and stopping your Hyperion Indexer or API instance.
+We provide scripts to simplify the process of starting and stopping your Hyperion Indexer or API instance. By default these use **pm2**.
 
 ### Starting
 
-To run the indexer, execute `./run.sh [chain name]-indexer`
+To run the indexer, execute `./run [chain name]-indexer`
 
-To run the api, execute `./run.sh [chain name]-api`
+To run the api, execute `./run [chain name]-api`
 
 !!! example "Examples"
     Starting indexer for **"eos"** chain:
     ```
-    ./run.sh eos-indexer
+    ./run eos-indexer
     ```
     Starting API for **"test"** chain:
     ```
-    ./run.sh test-api
+    ./run test-api
     ```
 
 !!! note
@@ -79,21 +79,44 @@ To run the api, execute `./run.sh [chain name]-api`
 
 ### Stopping
 
-Use the stop.sh script to stop an instance as follows:
+Use the `./stop` script to stop an instance as follows:
 
 !!! example "Examples"
     Stop API for EOS mainnet:
     ```
-    ./stop.sh eos-api
+    ./stop eos-api
     ```
     Stop indexer for WAX mainnet:
     ```
-    ./stop.sh wax-indexer
+    ./stop wax-indexer
     ```
 
 !!! note
     You need to pass the name of the chain you previously created followed by indexer or api to indicate the instance
-    you want to stop.
+    you want to stop. Stopping the indexer performs a graceful controller shutdown (clean flush), never a hard kill.
+
+### Running without pm2 (systemd)
+
+pm2 is the default and recommended supervisor. Operators who prefer **not** to
+use pm2 can run Hyperion under **systemd** instead — pm2 users are unaffected.
+
+Install the unit templates from the repo's `systemd/` directory (see
+`systemd/README.md`), then either drive `systemctl` directly or run the same
+`./run` / `./stop` commands with the `HYP_NO_PM2` environment variable set,
+which routes them to systemd:
+
+!!! example "Examples"
+    ```
+    HYP_NO_PM2=1 ./run wax-indexer     # -> systemctl start hyperion-indexer@wax
+    HYP_NO_PM2=1 ./stop wax-api        # -> systemctl stop  hyperion-api@wax
+    ```
+
+!!! warning "Single-instance API without pm2"
+    Without pm2 the API runs as a **single instance** — pm2's cluster-mode
+    multi-worker scaling is not reproduced and `api.pm2_scaling` becomes a
+    no-op. If you need a multi-instance API, keep pm2 (the default) or front
+    several `hyperion-api@<chain>` units with a reverse proxy. The indexer is
+    unaffected — it manages its own workers and stops gracefully either way.
 
 !!! attention  
     The stop script won't stop Hyperion Indexer immediately, it will first flush the queues. Be aware that this
@@ -162,6 +185,52 @@ curl -Ss "http://127.0.0.1:7000/v2/history/get_deltas?limit=1" | jq
 
 You can check the **Swagger UI** at: `http://127.0.0.1:7000/v2/docs` for more information on all the available endpoints
 
+## State Synchronization (MongoDB)
+
+Hyperion stores chain state in MongoDB collections: `accounts`, `permissions`, `proposals`, and `voters`. These collections are populated automatically during indexing, but you can also rebuild them on demand using the sync commands.
+
+!!! info
+    The sync commands connect directly to the chain API and rebuild the MongoDB collections from current chain state. They are safe to run at any time and use upsert operations, so they won't duplicate data.
+
+### Available Sync Commands
+
+| Command | Description |
+|---------|-------------|
+| `./hyp-control sync permissions <chain>` | Rebuilds permissions including linked actions |
+| `./hyp-control sync accounts <chain>` | Synchronizes account balances and metadata |
+| `./hyp-control sync voters <chain>` | Rebuilds voter registrations and delegations |
+| `./hyp-control sync proposals <chain>` | Indexes active multisig proposals |
+| `./hyp-control sync contract-state <chain>` | Syncs custom contract table state (requires `features.contract_state` config) |
+| `./hyp-control sync all <chain>` | Runs voters, accounts, proposals, and contract-state in sequence |
+
+!!! tip "When to run sync commands"
+    - After upgrading Hyperion to a new version
+    - After recovering from indexer errors
+    - To rebuild state after database maintenance
+    - When setting up a new chain and you want immediate state without waiting for the indexer to catch up
+
+### Custom Contract State Indexing
+
+You can configure Hyperion to index specific contract tables into MongoDB. Add the contract configuration to your chain config under `features.contract_state.contracts`:
+
+```json
+"features": {
+    "contract_state": {
+        "contracts": {
+            "eosio.token": {
+                "tables": {
+                    "accounts": {
+                        "autoIndex": true
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Use `./hyp-config contracts add-single <chain> <account> <table> <autoIndex>` to add contracts via CLI.
+
 ## Enabling Streaming
 
 Once your indexer is finished and it's only reading live blocks, you can enable the **streaming api** if needed. To do so, enable all options under `features.streaming` in your chain config file
@@ -208,7 +277,10 @@ Plugins are optional. Follow the documentation on the required plugin page.
 
 Official Plugins:
 
-- [Hyperion Explorer](https://github.com/eosrio/hyperion-explorer-plugin/tree/develop){:target="_blank"}
+- [Hyperion Explorer](https://github.com/eosrio/hyperion-explorer){:target="_blank"} — see [Explorer Setup](../explorer.md) for installation instructions
+
+!!! warning "Deprecated"
+    The old [hyperion-explorer-plugin](https://github.com/eosrio/hyperion-explorer-plugin){:target="_blank"} has been replaced by the standalone [hyperion-explorer](https://github.com/eosrio/hyperion-explorer){:target="_blank"} repository.
 
 !!! warning "Experimental Feature"
-Running 3rd-party plugins could be dangerous, please make sure you review the published code before installing
+    Running 3rd-party plugins could be dangerous, please make sure you review the published code before installing

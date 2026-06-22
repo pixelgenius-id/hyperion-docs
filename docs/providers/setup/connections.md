@@ -6,11 +6,14 @@
 
 ### RabbitMQ parameters
 
-- `"host":"127.0.0.1:5672"`
-- `"api":"127.0.0.1:15672"`
+- `"host":"127.0.0.1:5672"` — AMQP protocol port
+- `"api":"127.0.0.1:15672"` — Management API port (used for queue purging)
 - `"user":"my_user"`
 - `"pass":"my_password"`
-- `"vhost":"hyperion"`
+- `"vhost":"/hyperion"` — RabbitMQ virtual host name
+
+!!! warning "VHost naming"
+    When RabbitMQ is configured with `RABBITMQ_DEFAULT_VHOST=/hyperion`, the vhost name **includes the leading `/`**. Use the exact name as shown by `rabbitmqctl list_vhosts`. A mismatched vhost will cause `Expected ConnectionOpenOk; got <ConnectionClose>` errors. See [Indexer Troubleshooting](../help/indexer.md#amqp-connection-refused) for details.
 
 ### Elasticsearch parameters
 
@@ -24,6 +27,18 @@
 
 - `"host":"127.0.0.1"`
 - `"port":"6379"`
+
+### MongoDB parameters
+
+!!! attention
+    MongoDB is **required** starting from Hyperion 4.x.
+
+- `"enabled": true` ⇒ Must be `true` for Hyperion 4.x (MongoDB is mandatory)
+- `"host": "127.0.0.1"`
+- `"port": 27017`
+- `"database_prefix": "hyperion"` ⇒ Databases are created as `{prefix}_{chain}` (e.g., `hyperion_eos`)
+- `"user": ""` ⇒ MongoDB username (leave empty if no authentication)
+- `"pass": ""` ⇒ MongoDB password
 
 ### Chain Parameters
 
@@ -46,7 +61,8 @@ In this example we have a connection.json file with:
 - Local Elasticsearch
     - no user
     - no password
-- Local Reddis
+- Local Redis
+- Local MongoDB (no auth)
 - State History connections: 
     - Remote EOS Mainnet
     - Remote sample chain
@@ -60,7 +76,7 @@ In this example we have a connection.json file with:
     "api": "127.0.0.1:15672",
     "user": "admin",
     "pass": "123456",
-    "vhost": "hyperion"
+    "vhost": "/hyperion"
   },
   "elasticsearch": {
     "protocol": "http",
@@ -74,6 +90,14 @@ In this example we have a connection.json file with:
   "redis": {
     "host": "127.0.0.1",
     "port": "6379"
+  },
+  "mongodb": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 27017,
+    "database_prefix": "hyperion",
+    "user": "",
+    "pass": ""
   },
   "chains": {
     "eos": {
