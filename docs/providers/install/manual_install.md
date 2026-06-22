@@ -483,7 +483,7 @@ If everything runs smoothly, it's time to install Hyperion! :fontawesome-solid-c
 To do that, simply run the following commands:
 
 ```bash
-git clone https://github.com/eosrio/hyperion-history-api.git
+git clone https://github.com/pixelgenius-id/hyperion-history-api.git
 cd hyperion-history-api
 npm ci
 ```

@@ -1,5 +1,8 @@
 # Automated Installation Script
 
+!!! warning "Not applicable for Vexanium"
+    This script targets generic Antelope chains and installs the upstream eosrio Hyperion. For Vexanium, use the [Manual Installation](manual_install.md) guide instead.
+
 This installation script is maintained [here](https://github.com/eosrio/hyperion-auto-setup){:target="_blank"}
 
 !!! info "Tip"

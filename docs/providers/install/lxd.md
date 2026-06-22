@@ -1,5 +1,8 @@
 # Configuring Hyperion with LXD
 
+!!! warning "Not applicable for Vexanium"
+    This LXD image is not configured for Vexanium. Use the [Manual Installation](manual_install.md) guide instead.
+
 We host a [LXD](https://linuxcontainers.org/lxd/introduction/) image containing a pre-configured Hyperion instance.
 Please follow the instructions below to get started.
 

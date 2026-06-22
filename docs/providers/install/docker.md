@@ -1,4 +1,8 @@
 # Hyperion Docker
+
+!!! warning "Not applicable for Vexanium"
+    This Docker setup uses upstream eosrio images and is not configured for Vexanium. Use the [Manual Installation](manual_install.md) guide instead.
+
 * [Hyperion Docker Repository](https://github.com/eosrio/hyperion-docker){:target="_blank"}
 
 <br>
