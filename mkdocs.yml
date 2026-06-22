@@ -1,5 +1,5 @@
-site_name: Hyperion Documentation
-site_url: https://hyperion.docs.eosrio.io/
+site_name: Hyperion Docs — Vexanium
+site_url: https://vexascan.com/hyperion/
 site_description: Scalable Full History API Solution for Antelope (former EOSIO) based blockchains.
 copyright: Hyperion History API Documentation
 repo_name: 'eosrio/hyperion-history-api'
