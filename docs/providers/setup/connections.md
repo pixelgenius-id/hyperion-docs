@@ -43,7 +43,7 @@
 ### Chain Parameters
 
 - `"name":"Vexanium Mainnet"`
-- `"chain_id":"aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"`
+- `"chain_id":"f9f432b1851b5c179d2091a96f593aaed50ec7466b74f89301f957a83e56ce1f"`
 - `"http":"http://127.0.0.1:8888"`
 - <u>`"ship": [ {"label": "primary", "url": "ws://127.0.0.1:8080"},   {"label": "secondary", "url": "ws://127.0.0.1:38080"}], or 
 "ship": ["ws://127.0.0.1:8080","ws://127.0.0.1:38080"] `</u>
@@ -102,7 +102,7 @@ In this example we have a connection.json file with:
   "chains": {
     "vex": {
       "name": "Vexanium Mainnet",
-      "chain_id": "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
+      "chain_id": "f9f432b1851b5c179d2091a96f593aaed50ec7466b74f89301f957a83e56ce1f",
       "http": "http://127.0.0.1:8888",
       "ship": "ws://127.0.0.1:8080",
       "WS_ROUTER_PORT": 7001
