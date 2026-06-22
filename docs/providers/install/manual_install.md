@@ -421,47 +421,60 @@ npm install pm2@latest -g
 pm2 startup
 ```
 
-## Antelope Node (EOSIO)
+## Vexanium Node (vex-spring)
 
-You need either **Leap** or **Spring** (Savanna consensus) to serve state history to Hyperion.
+Vexanium runs **vex-spring**, a fork of AntelopeIO Spring maintained by the Vexanium team. Do not use the upstream Leap or Spring binaries — they are not compatible with the Vexanium chain.
 
-### Leap (legacy)
-
-```bash
-wget https://github.com/AntelopeIO/leap/releases/download/v5.0.3/leap_5.0.3_amd64.deb
-sudo apt install ./leap_5.0.3_amd64.deb
-```
-
-### Spring (Savanna consensus)
-
-Spring is the successor to Leap, featuring the Savanna consensus algorithm. Use Spring 1.2.2+ for production deployments.
+### Install vex-spring
 
 ```bash
-wget https://github.com/AntelopeIO/spring/releases/download/v1.2.2/spring_1.2.2_amd64.deb
-sudo apt install ./spring_1.2.2_amd64.deb
+wget https://vexascan.com/download/files/vex-spring_1.2.2-ubuntu22.04_amd64.deb
+sudo dpkg -i vex-spring_1.2.2-ubuntu22.04_amd64.deb
 ```
 
 !!! info
-    Check the latest Spring releases at [github.com/AntelopeIO/spring/releases](https://github.com/AntelopeIO/spring/releases){:target="_blank"}
+    vex-spring source and releases: [github.com/pixelgenius-id/spring](https://github.com/pixelgenius-id/spring){:target="_blank"}
 
-### Configuration
+### Bootstrap from snapshot
 
-Add the following configuration to the `config.ini` file:
+A snapshot is required because the network does not serve old block logs.
+
+```bash
+wget https://vexascan.com/download/files/vex-mainnet-snapshot-latest.bin
+mv vex-mainnet-snapshot-latest.bin snapshot-latest.bin
+```
+
+### nodeos config.ini
+
+Add the following to your `config.ini`. The `state_history_plugin` is required for Hyperion.
 
 ```ini
+# State History (required for Hyperion)
+plugin = eosio::state_history_plugin
 state-history-dir = "state-history"
 trace-history = true
 chain-state-history = true
 state-history-endpoint = 127.0.0.1:8080
+
+# Chain API (required for Hyperion)
 plugin = eosio::chain_api_plugin
-plugin = eosio::state_history_plugin
+plugin = eosio::http_plugin
+http-server-address = 127.0.0.1:8888
 ```
 
-!!! warning "Spring config.ini restrictions"
-    Spring v1.2.2+ enforces stricter separation between genesis parameters and runtime configuration.
-    Resource limit parameters (e.g., `max-block-net-usage`, `max-block-cpu-usage-threshold-us`) **must** be
-    defined in `genesis.json`, not `config.ini`. Placing them in `config.ini` will cause `nodeos` to crash
-    at startup with `Unknown option`.
+Start the node with the snapshot on first run:
+
+```bash
+nodeos --snapshot snapshot-latest.bin \
+  --data-dir ./data \
+  --config-dir ./data \
+  [... other flags ...]
+```
+
+On subsequent restarts, omit `--snapshot`.
+
+!!! warning
+    Do not place genesis or resource-limit parameters in `config.ini` — vex-spring v1.2.2 enforces strict separation and will crash at startup with `Unknown option` if those are present.
 
 ## Hyperion
 
