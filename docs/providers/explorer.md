@@ -153,11 +153,11 @@ themeData = {
 
 ### Available themes
 
-The explorer ships with several built-in themes:
+The explorer ships with several built-in themes. Use `vex` for Vexanium:
 
 | Theme | Chain |
 |---|---|
-| `vex` | Vexanium |
+| `vex` | **Vexanium** |
 | `vaulta` | Vaulta (formerly EOS) |
 | `wax` | WAX |
 | `telos` | Telos |

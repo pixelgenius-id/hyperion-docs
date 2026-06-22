@@ -24,7 +24,7 @@ This guide outlines the steps required to register as a provider and participate
 
 #### **Complete Your Provider Profile**
    - Navigate to the [QRY Provider Registration Page](https://provider.qry.network/).
-   - Choose the blockchain network to register, such as the Jungle in this example.
+   - Choose the blockchain network to register. For Vexanium, select the corresponding network.
    - Log in with your producer account using either Anchor wallet for simplicity or `cleos` for a more secure, air-gapped method. 
    - Follow the steps below to log in with `cleos`:
       - Select `cleos`, enter your Account Name and Permission, and generate the Cleos Command.

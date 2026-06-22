@@ -86,7 +86,7 @@ The `streamActions` method allows you to receive a stream of blockchain actions 
 ```typescript
 import {HyperionStreamClient, StreamClientEvents} from "@eosrio/hyperion-stream-client";
 const client = new HyperionStreamClient({
-    endpoint: "https://sidechain.node.tibs.app",
+    endpoint: "https://vexascan.com",
     debug: true,
     libStream: false
 });
