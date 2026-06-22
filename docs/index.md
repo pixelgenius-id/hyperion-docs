@@ -6,7 +6,7 @@
 
 !!! abstract ""
     Scalable Full History API Solution for [Antelope](https://antelope.io/){:target="_blank"} (former EOSIO) based blockchains.
-    Maintained for Vexanium by [Pixelgenius](https://github.com/pixelgenius-id){:target="_blank"}
+    Made with ♥ by [EOS Rio](https://eosrio.io/){:target="_blank"} — adapted for Vexanium by [Pixelgenius](https://github.com/pixelgenius-id){:target="_blank"}
 
 ## Official documentation
 
