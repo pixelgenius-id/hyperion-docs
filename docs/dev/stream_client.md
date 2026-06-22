@@ -157,7 +157,7 @@ client.streamActions({
     Referring to the same pattern as the action stream example above, one could also include a delta stream request
     ```javascript
     client.streamDeltas({
-        code: 'eosio.token',
+        code: 'vexcore',
         table: '*',
         scope: '',
         payer: '',

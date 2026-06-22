@@ -8,7 +8,7 @@ hide:
 The Hyperion Explorer is a lightweight blockchain explorer built with **Angular** and **server-side rendering (SSR)**. It connects to a Hyperion API instance and provides a web interface for browsing accounts, blocks, transactions, and more.
 
 !!! info "Repository"
-    [:fontawesome-brands-github: eosrio/hyperion-explorer](https://github.com/eosrio/hyperion-explorer){:target="_blank"}
+    [:fontawesome-brands-github: pixelgenius-id/hyperion-history-api](https://github.com/pixelgenius-id/hyperion-history-api){:target="_blank"}
 
 ## Features
 
@@ -37,7 +37,7 @@ Clone the explorer inside the `hyperion-history-api` folder. The conventional di
 
 ```bash
 cd hyperion-history-api
-git clone https://github.com/eosrio/hyperion-explorer.git explorer
+git clone https://github.com/pixelgenius-id/hyperion-history-api.git
 cd explorer
 ```
 
@@ -157,6 +157,7 @@ The explorer ships with several built-in themes:
 
 | Theme | Chain |
 |---|---|
+| `vex` | Vexanium |
 | `vaulta` | Vaulta (formerly EOS) |
 | `wax` | WAX |
 | `telos` | Telos |
