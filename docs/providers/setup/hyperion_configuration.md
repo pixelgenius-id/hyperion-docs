@@ -49,9 +49,13 @@ Finally, check your configuration running:
 ./hyp-config list chains
 ```
 
-You should see an output similar to:
+You should see output listing your configured chain, for example:
 
-[![indexer](../../assets/img/configured_chains.png)](../../assets/img/configured_chains.png)
+```
+Chain: vex
+  HTTP: http://127.0.0.1:8888
+  SHIP: ws://127.0.0.1:8080
+```
 
 ## Running Hyperion
 
@@ -126,9 +130,7 @@ which routes them to systemd:
 The Hyperion Indexer is configured to perform an abi scan `("abi_scan_mode": true)` as default. So, on your first run,
 you'll probably see something like this:
 
-[![indexer](../../assets/img/indexer.png)](../../assets/img/indexer.png)
-
-This is an example of an ABI SCAN on the Vexanium chain.
+On a successful ABI scan you will see a live counter in the terminal showing worker and throughput stats.
 
 Where:
 
@@ -143,9 +145,7 @@ Where:
 ## API
 After running the api, you should see a log like this:
 
- [![api](../../assets/img/api.png)](../../assets/img/api.png)
-
-Now, it's time to play around making some queries. :fontawesome-regular-face-laugh-wink:
+Once the API starts you will see a log confirming the chain name, API port, and loaded plugins. Time to test some queries.
 
 !!! tip "Tip"
     we are using `jq` to format the json output for better readability
@@ -162,8 +162,21 @@ First, let's test the health check endpoint
 curl -Ss "http://127.0.0.1:7000/v2/health" | jq
 ```
 
-??? example "View example"
-    [![healthcheck](../../assets/img/healthcheck.png)](../../assets/img/healthcheck.png)
+??? example "Example response"
+    ```json
+    {
+      "version": "4.0.8-dirty",
+      "host": "vexascan.com",
+      "health": [
+        { "service": "StateHistory", "status": "OK" },
+        { "service": "RabbitMq",     "status": "OK" },
+        { "service": "Elasticsearch","status": "OK" },
+        { "service": "Redis",        "status": "OK" }
+      ],
+      "features": { "streaming": { "enable": false } },
+      "query_time_ms": 3.2
+    }
+    ```
 
 Then we can ask for the last action on chain:
 
@@ -171,8 +184,24 @@ Then we can ask for the last action on chain:
 curl -Ss "http://127.0.0.1:7000/v2/history/get_actions?limit=1" | jq
 ```
 
-??? example "View example"
-    [![get_actions](../../assets/img/get_actions.png)](../../assets/img/get_actions.png)
+??? example "Example response"
+    ```json
+    {
+      "query_time_ms": 41.1,
+      "last_indexed_block": 409662035,
+      "last_indexed_block_time": "2026-06-22T10:26:52.000",
+      "actions": [
+        {
+          "block_num": 409662033,
+          "act": {
+            "account": "ad24swappool",
+            "name": "updateprices",
+            "data": { "baseprice": 0.002152, "pool_id": "24" }
+          }
+        }
+      ]
+    }
+    ```
 
 We can do the same for deltas:
 
@@ -180,8 +209,21 @@ We can do the same for deltas:
 curl -Ss "http://127.0.0.1:7000/v2/history/get_deltas?limit=1" | jq
 ```
 
-??? example "View example"
-    [![get_deltas](../../assets/img/get_deltas.png)](../../assets/img/get_deltas.png)
+??? example "Example response"
+    ```json
+    {
+      "query_time_ms": 12.4,
+      "last_indexed_block": 409662035,
+      "deltas": [
+        {
+          "block_num": 409662033,
+          "code": "vexcore",
+          "table": "global",
+          "present": 1
+        }
+      ]
+    }
+    ```
 
 You can check the **Swagger UI** at: `http://127.0.0.1:7000/v2/docs` for more information on all the available endpoints
 
