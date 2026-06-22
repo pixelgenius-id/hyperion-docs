@@ -36,10 +36,10 @@ The initialization command will create a `connections.json` file that follows th
 Now you can proceed and add a new chain to your configuration. Run the following command:
 
 ```
-./hyp-config new chain eos --http "http://127.0.0.1:8888" --ship "ws://127.0.0.1:8080"
+./hyp-config new chain vex --http "http://127.0.0.1:8888" --ship "ws://127.0.0.1:8080"
 ```
 
-This command will create a `chains/eos.config.json` file that follows the template described [here](chain.md) and also configure the state history section of the `connections.json` file for this chain.
+This command will create a `chains/vex.config.json` file that follows the template described [here](chain.md) and also configure the state history section of the `connections.json` file for this chain.
 
 ### Check your chain configuration
 
@@ -64,13 +64,13 @@ To run the indexer, execute `./run [chain name]-indexer`
 To run the api, execute `./run [chain name]-api`
 
 !!! example "Examples"
-    Starting indexer for **"eos"** chain:
+    Starting indexer for **"vex"** chain:
     ```
-    ./run eos-indexer
+    ./run vex-indexer
     ```
-    Starting API for **"test"** chain:
+    Starting API for **"vex"** chain:
     ```
-    ./run test-api
+    ./run vex-api
     ```
 
 !!! note
@@ -82,13 +82,13 @@ To run the api, execute `./run [chain name]-api`
 Use the `./stop` script to stop an instance as follows:
 
 !!! example "Examples"
-    Stop API for EOS mainnet:
+    Stop API for Vexanium:
     ```
-    ./stop eos-api
+    ./stop vex-api
     ```
-    Stop indexer for WAX mainnet:
+    Stop indexer for Vexanium:
     ```
-    ./stop wax-indexer
+    ./stop vex-indexer
     ```
 
 !!! note
@@ -107,8 +107,8 @@ which routes them to systemd:
 
 !!! example "Examples"
     ```
-    HYP_NO_PM2=1 ./run wax-indexer     # -> systemctl start hyperion-indexer@wax
-    HYP_NO_PM2=1 ./stop wax-api        # -> systemctl stop  hyperion-api@wax
+    HYP_NO_PM2=1 ./run vex-indexer     # -> systemctl start hyperion-indexer@vex
+    HYP_NO_PM2=1 ./stop vex-api        # -> systemctl stop  hyperion-api@vex
     ```
 
 !!! warning "Single-instance API without pm2"
@@ -128,7 +128,7 @@ you'll probably see something like this:
 
 [![indexer](../../assets/img/indexer.png)](../../assets/img/indexer.png)
 
-This an example of an ABI SCAN on the WAX chain.
+This is an example of an ABI SCAN on the Vexanium chain.
 
 Where:
 
@@ -217,7 +217,7 @@ You can configure Hyperion to index specific contract tables into MongoDB. Add t
 "features": {
     "contract_state": {
         "contracts": {
-            "eosio.token": {
+            "vexcore": {
                 "tables": {
                     "accounts": {
                         "autoIndex": true
