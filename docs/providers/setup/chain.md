@@ -132,21 +132,12 @@ Tables to fetch
 
 !!! tip For multiple chains, you should have one config file for each chain.
 
-Let's suppose that we gonna start Indexing the EOS Mainnet with:
-
-- Locally exposed API
-- 2 Readers
-- 2 Deserializer Queues
-- Live Streaming Enabled with Traces
-- ABI scan already done
-
-The first step is to make a copy of the config file and rename it: `chains/example.config.json`
-to `chains/eos.config.json`. The next step is to edit the file as the following:
+For Vexanium, create `chains/vex.config.json`. The example below shows a minimal working configuration:
 
 ````json
 {
   "api": {
-    "chain_name": "eos",
+    "chain_name": "vex",
     "server_addr": "127.0.0.1",
     "server_port": 7000,
     "server_name": "127.0.0.1:7000",
@@ -173,9 +164,9 @@ to `chains/eos.config.json`. The next step is to edit the file as the following:
   },
   "settings": {
     "preview": false,
-    "chain": "eos",
-    "eosio_alias": "eosio",
-    "parser": "1.8",
+    "chain": "vex",
+    "eosio_alias": "vexcore",
+    "parser": "3.2",
     "auto_stop": 300,
     "index_version": "v1",
     "debug": false,

@@ -37,8 +37,8 @@ This guide outlines the steps required to register as a provider and participate
    - Save the keys generated here for QRY HUB authentication.
 
 #### **Configure Hyperion**
-   - Ensure that Hyperion is upgraded to version 3.5.0 to connect with the QRY HUB. [Hyperion 3.5.0 Repository](https://github.com/eosrio/hyperion-history-api/tree/3.5.0).
-   - Edit the `chains/wax.config.json` file to include the instance key under the `"hub"` section.
+   - Ensure that Hyperion is upgraded to version 3.5.0 to connect with the QRY HUB. [Hyperion 3.5.0 Repository](https://github.com/pixelgenius-id/hyperion-history-api).
+   - Edit the `chains/vex.config.json` file to include the instance key under the `"hub"` section.
 
       ```json
       "hub": {
@@ -51,7 +51,7 @@ This guide outlines the steps required to register as a provider and participate
 
       ```shell
       cd ~/hyperion-history-api
-      pm2 start --only wax-api --update-env
+      pm2 start --only vex-api --update-env
       ```
 
    - PM2 logs will confirm the API’s connection to the QRY HUB.

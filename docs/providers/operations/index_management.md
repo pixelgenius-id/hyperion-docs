@@ -14,9 +14,9 @@ Hyperion splits action, delta, and block data into multiple Elasticsearch indice
 For example, with the default `index_partition_size` of `10000000` (10 million blocks), the indices would look like:
 
 ```
-eos-action-v1-000001   → blocks 1 to 10,000,000
-eos-action-v1-000002   → blocks 10,000,001 to 20,000,000
-eos-action-v1-000003   → blocks 20,000,001 to 30,000,000
+vex-action-v1-000001   → blocks 1 to 10,000,000
+vex-action-v1-000002   → blocks 10,000,001 to 20,000,000
+vex-action-v1-000003   → blocks 20,000,001 to 30,000,000
 ...
 ```
 

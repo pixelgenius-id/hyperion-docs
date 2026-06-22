@@ -6,7 +6,7 @@
 
 !!! abstract ""
     Scalable Full History API Solution for [Antelope](https://antelope.io/){:target="_blank"} (former EOSIO) based blockchains.
-    Made with ♥ by [Rio Blocks / EOS Rio](https://rioblocks.io/?lang=en){:target="_blank"}
+    Maintained for Vexanium by [Pixelgenius](https://github.com/pixelgenius-id){:target="_blank"}
 
 ## Official documentation
 
@@ -100,10 +100,9 @@ Used as messaging queue and data transport between the indexer stages and for re
 Used for transient data storage across processes and for the preemptive transaction caching used on
 the `v2/history/get_transaction` and `v2/history/check_transaction` endpoints
 
-#### 2.6 Leap State History
+#### 2.6 State History
 
-[Leap / Nodeos](https://github.com/AntelopeIO/leap/tree/main/plugins/state_history_plugin){:target="_blank"} plugin used
-to collect action traces and state deltas. Provides data via websocket to the indexer.
+vex-spring nodeos plugin used to collect action traces and state deltas. Provides data via websocket to the indexer.
 
 #### 2.7 Hyperion Stream Client (optional)
 

@@ -42,7 +42,7 @@
 
 ### Chain Parameters
 
-- `"name":"EOS Mainnet"`
+- `"name":"Vexanium Mainnet"`
 - `"chain_id":"aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"`
 - `"http":"http://127.0.0.1:8888"`
 - <u>`"ship": [ {"label": "primary", "url": "ws://127.0.0.1:8080"},   {"label": "secondary", "url": "ws://127.0.0.1:38080"}], or 
@@ -64,7 +64,7 @@ In this example we have a connection.json file with:
 - Local Redis
 - Local MongoDB (no auth)
 - State History connections: 
-    - Remote EOS Mainnet
+    - Remote Vexanium Mainnet
     - Remote sample chain
 
 
@@ -100,8 +100,8 @@ In this example we have a connection.json file with:
     "pass": ""
   },
   "chains": {
-    "eos": {
-      "name": "EOS Mainnet",
+    "vex": {
+      "name": "Vexanium Mainnet",
       "chain_id": "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
       "http": "http://127.0.0.1:8888",
       "ship": "ws://127.0.0.1:8080",

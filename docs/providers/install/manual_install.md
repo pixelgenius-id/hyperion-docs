@@ -4,7 +4,7 @@ This section describes how to manually install Hyperion and its environment. If 
 installation, this is the way to go.
 
 !!! warning
-    If you are running more than one node (Leap/Savanna), you can now configure the failover option directly in the `connections.json` file. Please refer to the section detailing the new parameters by clicking [here](../setup/connections.md)
+    If you are running more than one node (Spring/Savanna), you can now configure the failover option directly in the `connections.json` file. Please refer to the section detailing the new parameters by clicking [here](../setup/connections.md)
 
 
 !!! info
@@ -57,13 +57,13 @@ Below you can find the list of all Hyperion's dependencies:
 - [MongoDB 8.x+](https://www.mongodb.com/docs/manual/installation/){:target="_blank"}
 - [Node.js v22+](https://nodejs.org/en/download){:target="_blank"}
 - [PM2](http://pm2.keymetrics.io/docs/usage/quick-start/){:target="_blank"}
-- [NODEOS (Spring 1.2.2+ or Leap 5.0.3)](https://github.com/AntelopeIO/spring/releases){:target="_blank"}
+- [vex-spring (Vexanium nodeos fork)](https://github.com/pixelgenius-id/spring/releases){:target="_blank"}
 
 On the next steps you will install and configure each one of them.
 
 !!! note
     The Hyperion Indexer requires Node.js and pm2 to be on the same machine. All other dependencies (Elasticsearch,
-    RabbitMQ, Redis and EOSIO) can be installed on different machines, preferably on a high speed and low latency
+    RabbitMQ, Redis and nodeos) can be installed on different machines, preferably on a high speed and low latency
     network. Keep in mind that indexing speed will vary greatly depending on this configuration.
 
 ## Elasticsearch
@@ -423,7 +423,7 @@ pm2 startup
 
 ## Vexanium Node (vex-spring)
 
-Vexanium runs **vex-spring**, a fork of AntelopeIO Spring maintained by the Vexanium team. Do not use the upstream Leap or Spring binaries — they are not compatible with the Vexanium chain.
+Vexanium runs **vex-spring**, a fork of AntelopeIO Spring maintained by the Vexanium team. Do not use the upstream Leap or Spring binaries. They are not compatible with the Vexanium chain.
 
 ### Install vex-spring
 

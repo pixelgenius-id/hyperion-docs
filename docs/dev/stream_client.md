@@ -40,7 +40,7 @@ Without installing via npm, you can also load the webpack bundle directly:
 <script src="https://<ENDPOINT>/stream-client.js"></script>
 ```
 
-Where `<ENDPOINT>` is the Hyperion API (e.g. `https://eos.hyperion.eosrio.io`)
+Where `<ENDPOINT>` is the Hyperion API (e.g. `https://vexascan.com`)
 
 The bundle is also available at `dist/hyperion-stream-client.js` for other usages.
 
@@ -103,7 +103,7 @@ client.setAsyncDataHandler(async (data) => {
 })
 await client.connect();
 client.streamActions({
-  contract: 'eosio',
+  contract: 'vexcore',
   action: 'voteproducer',
   account: '',
   start_from: '2020-03-15T00:00:00.000Z',
@@ -117,24 +117,24 @@ client.streamActions({
 You can set up filters to refine your stream. Filters should use fields following the Hyperion Action Data Structure,
 such as:
 
-- `act.data.producers` (on `eosio::voteproducer`)
+- `act.data.producers` (on `vexcore::voteproducer`)
 - `@transfer.to` (here the `@` prefix is required for special mappings like transfers)
 
 Please refer to
-the [mapping definitions](https://github.com/eosrio/Hyperion-History-API/blob/main/definitions/index-templates.ts){:target="_blank"} for available data fields
+the [mapping definitions](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts){:target="_blank"} for available data fields
 
 Example: to filter the stream for
-every transfer made to the `eosio.ramfee` account:
+every transfer made to the `vexcore` account:
 
 ```javascript
 client.streamActions({
-    contract: 'eosio.token',
+    contract: 'vexcore',
     action: 'transfer',
-    account: 'eosio',
+    account: 'vexcore',
     start_from: 0,
     read_until: 0,
     filters: [
-        {field: '@transfer.to', value: 'eosio.ramfee'}
+        {field: '@transfer.to', value: 'vexcore'}
     ],
 });
 ``` 
@@ -179,8 +179,8 @@ data object is structured as follows:
 
 - `type` - _action_ | _delta_
 - `mode` - _live_ | _history_
-- `content` - Hyperion Data Structure (see [action index](https://github.com/eosrio/Hyperion-History-API/blob/main/definitions/index-templates.ts#L53){:target="_blank"}
-  and [delta index](https://github.com/eosrio/Hyperion-History-API/blob/main/definitions/index-templates.ts#L212){:target="_blank"}
+- `content` - Hyperion Data Structure (see [action index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts#L53){:target="_blank"}
+  and [delta index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts#L212){:target="_blank"}
   templates)
 
 ```javascript

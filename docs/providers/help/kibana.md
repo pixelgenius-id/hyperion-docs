@@ -50,8 +50,8 @@ If you can't access, check your credentials on your config file.
  
     !!! tip
          Index Pattern List:
-         `eos-abi-*` `eos-action-*` `eos-block-*` `eos-logs-*` `eos-delta-*`     
-         Where `eos` is the name of the chain.
+         `vex-abi-*` `vex-action-*` `vex-block-*` `vex-logs-*` `vex-delta-*`     
+         Where `vex` is the name of the chain.
 
 5. Select a time filter, if there are any, and click on `Create index pattern`
  
