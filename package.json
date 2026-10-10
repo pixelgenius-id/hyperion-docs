@@ -5,7 +5,6 @@
   "scripts": {
     "start": "uv run mkdocs serve",
     "start:external": "uv run mkdocs serve --dev-addr=0.0.0.0:8000",
-    "build": "uv run mkdocs build",
-    "deploy": "uv run mkdocs gh-deploy"
+    "build": "uv run mkdocs build"
   }
 }

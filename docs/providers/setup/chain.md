@@ -52,6 +52,7 @@ with its default value and an example of real usage.
 - `"index_partition_size": 10000000` ⇒ Number of blocks per Elasticsearch index partition. **Do not change after indexing has started.** See [Index Lifecycle Management](../operations/index_management.md)
 - `"max_retained_blocks": 0` ⇒ Maximum blocks to retain on Elasticsearch. Older data is automatically pruned. Set to `0` to disable. See [Index Lifecycle Management](../operations/index_management.md)
 - `"es_replicas": 0` ⇒ Number of Elasticsearch index replicas
+- `"evm_support": false` ⇒ **Vexanium only.** Decodes `vex.evm::pushtx` and `vex.evm::evmtx` actions into the `@pushtx` and `@evmtx` fields (hash, sender, recipient, value, nonce, input data), so EVM transactions on Vexanium can be searched by address, for example `get_actions?@evmtx.from=0x6e1a...`. Write the address in **lowercase**. In API responses the decoded fields are returned inside `act.data`.
 - `"tiered_index_allocation"` ⇒ Tiered storage allocation rules for Elasticsearch indices. See [Index Lifecycle Management](../operations/index_management.md)
 
 ### 3. Blacklists
@@ -261,6 +262,7 @@ Key differences from a standard Antelope chain:
 - `parser` is `"3.2"` (Antelope Spring)
 - `custom_core_token` is `"VEX"`
 - `"vexcore::onblock"` is blacklisted to reduce index noise
+- `evm_support: true` indexes Vexanium EVM transactions (`vex.evm`) as `@pushtx` / `@evmtx`
 - `live_only_mode: true` — indexing starts from a snapshot, not from block 1
 
 ```json
@@ -297,7 +299,8 @@ Key differences from a standard Antelope chain:
     "index_version": "v1",
     "auto_stop": 0,
     "index_partition_size": 10000000,
-    "es_replicas": 0
+    "es_replicas": 0,
+    "evm_support": true
   },
   "indexer": {
     "start_on": 409543200,

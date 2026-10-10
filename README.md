@@ -1,8 +1,10 @@
-# hyperion-docs
+# hyperion-docs (Vexanium)
 
-Hyperion History Documentation
+Documentation for [Hyperion History API](https://github.com/pixelgenius-id/hyperion-history-api) on the Vexanium blockchain.
 
-Public URL: https://hyperion.docs.eosrio.io/
+Hyperion was created by [EOS Rio](https://eosrio.io/) and is further developed for the Vexanium blockchain by [Pixelgenius](https://github.com/pixelgenius-id). This repository is a fork of [eosrio/hyperion-docs](https://github.com/eosrio/hyperion-docs).
+
+Public URL: https://pixelgenius-id.github.io/hyperion-docs/
 
 ### Install dependencies
 
@@ -13,8 +15,7 @@ source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-
-### Windows 
+### Windows
 
 ```cmd
 python -m venv .venv
@@ -22,7 +23,6 @@ python -m venv .venv
 ```
 Troubleshoot installing cairo on Windows:
 https://squidfunk.github.io/mkdocs-material/plugins/requirements/image-processing/#cairo-graphics-windows
-
 
 ### Run development server
 
@@ -42,9 +42,6 @@ mkdocs build
 npm run build
 ```
 
-### Deploy to gh-pages
+### Deploy
 
-```bash
-source .venv/bin/activate
-mkdocs gh-deploy
-```
+Every push to `master` builds the site and publishes it to GitHub Pages through `.github/workflows/docs.yml`.

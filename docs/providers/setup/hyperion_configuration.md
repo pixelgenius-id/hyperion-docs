@@ -165,7 +165,7 @@ curl -Ss "http://127.0.0.1:7000/v2/health" | jq
 ??? example "Example response"
     ```json
     {
-      "version": "4.0.8-dirty",
+      "version": "4.1.0-1",
       "host": "vexascan.com",
       "health": [
         { "service": "StateHistory", "status": "OK" },

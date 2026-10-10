@@ -6,7 +6,7 @@
 
 !!! abstract ""
     Scalable Full History API Solution for [Antelope](https://antelope.io/){:target="_blank"} (former EOSIO) based blockchains.
-    Made with ♥ by [EOS Rio](https://eosrio.io/){:target="_blank"} — adapted for Vexanium by [Pixelgenius](https://github.com/pixelgenius-id){:target="_blank"}
+    Created by [EOS Rio](https://eosrio.io/){:target="_blank"}, further developed for the Vexanium blockchain by [Pixelgenius](https://github.com/pixelgenius-id){:target="_blank"}.
 
 ## Official documentation
 
@@ -41,9 +41,9 @@
     [V1 Compatible](api/v1.md){ .md-button }
 
 
-### Official plugins:
+### Explorer
 
-- [Hyperion Lightweight Explorer](https://github.com/eosrio/hyperion-explorer-plugin){:target="_blank"}
+- [Hyperion Explorer](providers/explorer.md), the standalone explorer that replaced the old lightweight explorer plugin
 
 ## 1. Overview
 

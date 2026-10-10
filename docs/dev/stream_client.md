@@ -32,17 +32,15 @@ CommonJs (Node):
 const {HyperionStreamClient} = require('@eosrio/hyperion-stream-client');
 ```
 
-### Browser library (served from public Hyperion APIs)
+### Browser library
 
-Without installing via npm, you can also load the webpack bundle directly:
+Without installing via npm, you can load the bundle from a CDN:
 
 ```html
-<script src="https://<ENDPOINT>/stream-client.js"></script>
+<script src="https://unpkg.com/@eosrio/hyperion-stream-client/dist/hyperion-stream-client.js"></script>
 ```
 
-Where `<ENDPOINT>` is the Hyperion API (e.g. `https://vexascan.com`)
-
-The bundle is also available at `dist/hyperion-stream-client.js` for other usages.
+The same bundle is in the npm package at `dist/hyperion-stream-client.js` for other usages.
 
 ### 1. Connection
 
@@ -50,7 +48,7 @@ Set up the endpoint that you want to fetch data from:
 
 ```javascript
 const client = new HyperionStreamClient({
-    endpoint: 'https://example.com',
+    endpoint: 'https://vexascan.com:8443',
     debug: true,
     libStream: false
 });
@@ -94,7 +92,7 @@ The `streamActions` method allows you to receive a stream of blockchain actions 
 ```typescript
 import {HyperionStreamClient, StreamClientEvents} from "@eosrio/hyperion-stream-client";
 const client = new HyperionStreamClient({
-    endpoint: "https://vexascan.com",
+    endpoint: "https://vexascan.com:8443",
     debug: true,
     libStream: false
 });
@@ -129,14 +127,14 @@ such as:
 - `@transfer.to` (here the `@` prefix is required for special mappings like transfers)
 
 Please refer to
-the [mapping definitions](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts){:target="_blank"} for available data fields
+the [mapping definitions](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/src/indexer/definitions/index-templates.ts){:target="_blank"} for available data fields
 
 Example: to filter the stream for
-every transfer made to the `vexcore` account:
+every VEX transfer made to the `vexcore` account (the VEX token contract is `vex.token`):
 
 ```javascript
 client.streamActions({
-    contract: 'vexcore',
+    contract: 'vex.token',
     action: 'transfer',
     account: 'vexcore',
     start_from: 0,
@@ -187,8 +185,8 @@ data object is structured as follows:
 
 - `type` - _action_ | _delta_
 - `mode` - _live_ | _history_
-- `content` - Hyperion Data Structure (see [action index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts#L53){:target="_blank"}
-  and [delta index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/definitions/index-templates.ts#L212){:target="_blank"}
+- `content` - Hyperion Data Structure (see [action index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/src/indexer/definitions/index-templates.ts#L52){:target="_blank"}
+  and [delta index](https://github.com/pixelgenius-id/hyperion-history-api/blob/main/src/indexer/definitions/index-templates.ts#L193){:target="_blank"}
   templates)
 
 ```javascript

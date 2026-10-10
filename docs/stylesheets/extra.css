@@ -34,3 +34,8 @@
     -webkit-mask-image: var(--md-admonition-icon--linux);
     mask-image: var(--md-admonition-icon--linux);
 }
+
+/* Buttons on the home page wrap on narrow screens: keep a gap between rows */
+.md-typeset .md-button {
+    margin: 0 .4rem .5rem 0;
+}

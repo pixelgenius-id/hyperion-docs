@@ -11,14 +11,14 @@ const https = require('https');
 In this example we fetch a Vexanium transaction by ID:
 
 ```
-"https://vexascan.com/v2/history/get_transaction?id=f9b484a87f34e919c82128d61a75721b33b5643682c5b2a0cc57137961805fb6"
+"https://vexascan.com:8443/v2/history/get_transaction?id=f9b484a87f34e919c82128d61a75721b33b5643682c5b2a0cc57137961805fb6"
 ```
 
 Create a Promise function that accepts the tx id and returns the result:
 
 ```javascript
 let getTransaction = function (args) {
-    let url = "https://vexascan.com/v2/history/get_transaction?id=" + args;
+    let url = "https://vexascan.com:8443/v2/history/get_transaction?id=" + args;
     return new Promise(function (resolve) {
         https.get(url, (resp) => {
             let data = '';

@@ -1,9 +1,10 @@
 site_name: Hyperion Docs — Vexanium
-site_url: https://vexascan.com/hyperion/
-site_description: Scalable Full History API Solution for Antelope (former EOSIO) based blockchains.
-copyright: Hyperion History API Documentation
+site_url: https://pixelgenius-id.github.io/hyperion-docs/
+site_description: Hyperion History API documentation for the Vexanium blockchain.
+copyright: Hyperion was created by EOS Rio and further developed for the Vexanium blockchain by Pixelgenius.
 repo_name: 'pixelgenius-id/hyperion-history-api'
 repo_url: 'https://github.com/pixelgenius-id/hyperion-history-api'
+edit_uri: 'https://github.com/pixelgenius-id/hyperion-docs/edit/master/docs/'
 
 
 markdown_extensions:
@@ -12,7 +13,8 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.details
   - pymdownx.superfences
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.keys
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
@@ -22,9 +24,6 @@ markdown_extensions:
 
 extra_css:
   - stylesheets/extra.css
-
-extra_javascript:
-  - javascripts/extra.js
 
 nav:
   - Home: index.md
@@ -102,9 +101,6 @@ theme:
 
 extra:
   generator: false
-  analytics:
-    provider: google
-    property: G-N6WF1VPFSH
   social:
     - icon: fontawesome/brands/github
       link: 'https://github.com/pixelgenius-id/hyperion-history-api'
